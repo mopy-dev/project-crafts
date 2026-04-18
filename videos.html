@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Showcases</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+<style>
+body {
+  background:#050505;
+  color:white;
+  overflow:hidden;
+}
+
+.scene {
+  width:420px;
+  height:260px;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  perspective:1200px;
+}
+
+.carousel {
+  width:100%;
+  height:100%;
+  transform-style:preserve-3d;
+  transition:0.8s;
+}
+
+.panel {
+  position:absolute;
+  width:360px;
+  height:220px;
+  left:30px;
+  top:20px;
+  background:#000;
+  border-radius:15px;
+}
+
+.panel.active {
+  transform:scale(1.1);
+  box-shadow:0 0 40px #00ff88, 0 0 80px #ff7a00;
+}
+
+iframe {
+  width:100%;
+  height:100%;
+  border:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="scene">
+  <div class="carousel" id="carousel"></div>
+</div>
+
+<script>
+const data = [
+  { id:"y3xPS1AkosE" },
+  { id:"JiCfXE8skhI" },
+  { id:"YHku6UVkikE" }
+];
+
+const carousel = document.getElementById("carousel");
+const angle = 360 / data.length;
+const radius = 320;
+
+let rot = 0;
+let index = 0;
+
+data.forEach((v,i)=>{
+  const p=document.createElement("div");
+  p.className="panel";
+  p.id="p"+i;
+
+  p.innerHTML=`<iframe src="https://www.youtube.com/embed/${v.id}"></iframe>`;
+
+  p.style.transform=`rotateY(${angle*i}deg) translateZ(${radius}px)`;
+  carousel.appendChild(p);
+});
+
+function update(){
+  data.forEach((_,i)=>{
+    document.getElementById("p"+i).classList.toggle("active", i===index);
+  });
+}
+
+function rotate(d){
+  rot += d*angle;
+  index = (index - d + data.length)%data.length;
+  carousel.style.transform=`rotateY(${rot}deg)`;
+  update();
+}
+
+update();
+</script>
+
+</body>
+</html>
